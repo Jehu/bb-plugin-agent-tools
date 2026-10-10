@@ -489,11 +489,11 @@ interface HostPluginsSnapshot {
 }
 
 export default async function plugin(bb: BbPluginApi) {
-  // Язык интерфейса плагина. Храним в kv, а не в настройках: подписи самих
-  // настроек объявляются раньше, чем их значения можно прочитать, поэтому
-  // источник правды должен быть доступен до define.
+  // The UI language is stored in KV rather than settings because setting labels
+  // are declared before their values can be read. New installations default to
+  // English; an explicit stored choice is retained.
   const storedLang = await bb.storage.kv.get<string>("lang");
-  let currentLang: Lang = isLang(storedLang) ? storedLang : "ru";
+  let currentLang: Lang = isLang(storedLang) ? storedLang : "en";
   setLang(currentLang);
 
   const settings = bb.settings.define({

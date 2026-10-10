@@ -11,7 +11,7 @@ export function isLang(value: unknown): value is Lang {
   return value === "ru" || value === "en";
 }
 
-let current: Lang = "ru";
+let current: Lang = "en";
 let dictionary: Record<string, string> = {};
 
 /** Подключить словарь переводов. Вызывается один раз при загрузке. */

@@ -10,6 +10,10 @@ setDictionary(EN);
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
+test("English is the default language", () => {
+  assert.equal(getLang(), "en");
+});
+
 test("русский отдаёт оригинал, английский — перевод, пропуск не ломает экран", () => {
   setLang("ru");
   assert.equal(getLang(), "ru");

@@ -39,6 +39,13 @@ test("склонения: три формы по-русски, две по-ан�
   setLang("ru");
 });
 
+test("dynamic diagnostics use their English translation entries", () => {
+  setLang("en");
+  assert.equal(tp("не удалось разобрать: {0}", "unexpected token"), "could not parse: unexpected token");
+  assert.equal(tp("абсолютный путь: {0}", "/usr/local/bin/mcp"), "absolute path: /usr/local/bin/mcp");
+  setLang("ru");
+});
+
 test("каждая строка интерфейса и CLI переведена", () => {
   const keys = new Set<string>();
   for (const file of ["app.tsx", "server.ts", "i18n.ts"]) {

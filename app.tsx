@@ -210,10 +210,16 @@ function describe(server: {
 }
 
 /** Одна строка с полным описанием предложенного сервера — уходит в title, не в текст. */
+/** Full proposed-server description; used in the title rather than visible text. */
 function pendingTitle(item: Pending): string {
   const parts = [item.hostName, item.kind, describe(item.spec)];
-  if (item.localOnly) parts.push(item.reason);
+  if (item.localOnly) parts.push(t(item.reason));
   return parts.filter((part) => part.length > 0).join(" · ");
+}
+
+function displayConfigWarning(warning: string): string {
+  const prefix = "не удалось разобрать: ";
+  return warning.startsWith(prefix) ? tp("не удалось разобрать: {0}", warning.slice(prefix.length)) : t(warning);
 }
 
 /** Уникальные машины из всех occurrences, в порядке первого появления. */
@@ -1920,10 +1926,10 @@ function AgentRows({
           <TruncatedPath path={agent.configPath} />
         )}
         {agent.configExists && agent.warning === null ? null : (
-          <div className="mt-0.5 text-xs text-muted-foreground">
+          <div className="mt-1 text-xs text-amber-700 dark:text-amber-300">
             {agent.configExists ? "" : t("нет файла")}
             {agent.configExists || agent.warning === null ? "" : " · "}
-            {agent.warning ?? ""}
+            {agent.warning === null ? "" : displayConfigWarning(agent.warning)}
           </div>
         )}
       </TableCell>

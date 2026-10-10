@@ -479,6 +479,13 @@ export const EN: Record<string, string> = {
   "файл слишком большой": "the file is too large",
   "в файле есть комментарии — плагин его не перезаписывает":
     "the file has comments — the plugin does not rewrite it",
+  "не удалось разобрать: {0}": "could not parse: {0}",
+  "внутри приложения: {0}": "inside the application: {0}",
+  "относительный путь: {0}": "relative path: {0}",
+  "абсолютный путь: {0}": "absolute path: {0}",
+  "аргумент с локальным путём: {0}": "argument with a local path: {0}",
+  "адрес на loopback: {0}": "loopback address: {0}",
+  "ссылка на локальный секрет ${…}": "reference to a local secret ${…}",
   "неизвестная папка": "unknown folder",
   "неизвестный агент": "unknown agent",
   "папка не найдена": "folder not found",

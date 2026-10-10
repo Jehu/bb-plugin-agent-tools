@@ -24,8 +24,8 @@
     "bbPluginSdk": ">=0.4.87"
   },
   "bb": {
-    "name": "Инструменты агентов",
-    "description": "MCP-серверы и навыки агентов на всех машинах BB: что где подключено, чего не хватает, единый канон скиллов и синхронизация одним нажатием.",
+    "name": "Agent Tools",
+    "description": "MCP servers and agent skills across every BB machine: what is connected where, what is missing, a single skills canon, and one-click synchronization.",
     "branding": {
       "icon": "Toolbox"
     },

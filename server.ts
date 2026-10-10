@@ -63,9 +63,21 @@ import {
   callHostTimed,
   type Lang,
 } from "./i18n";
+
 import { EN } from "./i18n.en";
 
 setDictionary(EN);
+function localOnlyReason(reason: string): string {
+  const prefixes = [
+    "внутри приложения: ",
+    "относительный путь: ",
+    "абсолютный путь: ",
+    "аргумент с локальным путём: ",
+    "адрес на loopback: ",
+  ];
+  const prefix = prefixes.find((candidate) => reason.startsWith(candidate));
+  return prefix === undefined ? t(reason) : tp(`${prefix}{0}`, reason.slice(prefix.length));
+}
 import {
   buildProviderRows,
   detectOpenCodeDrift,
@@ -2335,7 +2347,7 @@ export default async function plugin(bb: BbPluginApi) {
       lines.push(`\n${tp("Новые серверы ({0}):", current.pending.length)}`);
       for (const item of current.pending) {
         lines.push(
-          `  ${item.name}  ← ${item.hostName}/${item.kind}${item.localOnly ? `  [${tp("локальный: {0}", item.reason)}]` : ""}`,
+          `  ${item.name}  ← ${item.hostName}/${item.kind}${item.localOnly ? `  [${tp("локальный: {0}", localOnlyReason(item.reason))}]` : ""}`,
         );
       }
     }
@@ -2514,10 +2526,10 @@ export default async function plugin(bb: BbPluginApi) {
             current.pending.length === 0
               ? t("Новых серверов нет.")
               : current.pending
-                  .map(
-                    (item) =>
-                      `${item.name}  ← ${item.hostName}/${item.kind}${item.localOnly ? `  [${tp("локальный: {0}", item.reason)}]` : ""}`,
-                  )
+                  .map((item) => {
+                    const local = item.localOnly ? `  [${tp("локальный: {0}", localOnlyReason(item.reason))}]` : "";
+                    return `${item.name}  ← ${item.hostName}/${item.kind}${local}`;
+                  })
                   .join("\n"),
           );
         }

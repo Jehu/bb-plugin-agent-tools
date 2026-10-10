@@ -62,7 +62,7 @@ test("реальный скилл в папке Gemini переносится в
     scan("gemini-config", "/home/u/.gemini/config/skills", [dir("only", "h9")]),
   ]);
   assert.equal(rows[0]?.state, "only-here");
-  assert.deepEqual(resolveRowAction(rows[0]!), { mode: "adopt", label: "Перенести в канон" });
+  assert.deepEqual(resolveRowAction(rows[0]!), { mode: "adopt", label: "Move to the canon" });
   assert.equal(locationPolicy("gemini-config"), "drop");
 });
 
@@ -86,7 +86,7 @@ test("расходящаяся копия: побеждает более нов�
   assert.equal(claude.state, "diverged");
   assert.equal(resolveRowAction(claude)?.mode, "take");
   assert.equal(resolveRowAction(codex)?.mode, "link");
-  assert.equal(resolveRowAction(codex)?.label, "Удалить копию (канон новее)");
+  assert.equal(resolveRowAction(codex)?.label, "Remove newer canon copy");
 });
 
 test("равные даты при разном содержании остаются ручным решением", () => {
@@ -116,7 +116,7 @@ test("ссылка в проект без канона — кандидат в �
     scan("claude", "/home/u/.claude/skills", [link("selfystudio", "/home/u/apps/selfystudio/.agents/skills/selfystudio")]),
   ]);
   assert.equal(rows[0]?.state, "only-here");
-  assert.deepEqual(resolveRowAction(rows[0]!), { mode: "adopt", label: "За канон" });
+  assert.deepEqual(resolveRowAction(rows[0]!), { mode: "adopt", label: "Outside the canon" });
 });
 
 test("ссылка наружу мимо канона и BB остаётся информационной", () => {

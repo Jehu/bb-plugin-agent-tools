@@ -176,36 +176,35 @@ export function resolveRowAction(row: SkillRow): SkillAction | null {
   // Дом со своим реестром разбирает сам его хозяин: автоматических правил нет.
   if (policy === "own" && row.state !== "stray-link") return null;
   const leavesLink = policy === "link";
-  if (row.state === "stray-link") return { mode: "unlink", label: "Убрать ссылку" };
-  // Дубль реестра BB: убирать или нет — зависит от того, запускает ли человек
-  // этот CLI вне BB, поэтому правило не автоматическое.
-  if (row.state === "bb-registry") return { mode: "unlink", label: "Убрать ссылку", manual: true };
+  if (row.state === "stray-link") return { mode: "unlink", label: "Remove link" };
+  // A BB registry duplicate needs a manual choice: it depends on whether the
+  // CLI is used outside BB.
+  if (row.state === "bb-registry") return { mode: "unlink", label: "Remove link", manual: true };
   if (row.state === "only-here") {
-    return { mode: "adopt", label: leavesLink ? "За канон" : "Перенести в канон" };
+    return { mode: "adopt", label: leavesLink ? "Outside the canon" : "Move to the canon" };
   }
-  // Живая ссылка в проект: в канон копируем содержимое, саму ссылку не трогаем.
+  // A live project link: copy its contents into the canon but leave the link.
   if (row.state === "linked-external") {
     if (row.canonicalMtime === null) {
-      return { mode: "adopt", label: leavesLink ? "За канон" : "Скопировать в канон" };
+      return { mode: "adopt", label: leavesLink ? "Outside the canon" : "Copy to the canon" };
     }
     if (row.mtime !== null && row.canonicalMtime !== null && row.mtime > row.canonicalMtime) {
-      return { mode: "take", label: "В канон (копия новее)" };
+      return { mode: "take", label: "Use copy for the canon" };
     }
-    return null;
   }
   if (row.state === "copy") {
     return leavesLink
-      ? { mode: "link", label: "Симлинк" }
-      : { mode: "delete", label: "Удалить" };
+      ? { mode: "link", label: "Symlink" }
+      : { mode: "delete", label: "Remove" };
   }
   if (row.state === "diverged") {
     if (row.mtime !== null && row.canonicalMtime !== null && row.mtime > row.canonicalMtime) {
-      return { mode: "take", label: "В канон (копия новее)" };
+      return { mode: "take", label: "Use copy for the canon" };
     }
     if (row.mtime !== null && row.canonicalMtime !== null && row.canonicalMtime > row.mtime) {
       return {
         mode: "link",
-        label: leavesLink ? "Заменить копию (канон новее)" : "Удалить копию (канон новее)",
+        label: leavesLink ? "Replace copy with newer canon" : "Remove newer canon copy",
       };
     }
     return null;
